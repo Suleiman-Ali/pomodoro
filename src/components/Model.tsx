@@ -15,9 +15,9 @@ function Model(): JSX.Element | null {
         <button type="submit" className="bi bi-x-circle form__close"></button>
 
         <div className="form__box">
-          <LabeledBox label="pomodoro" min={5} max={120} ref={pomodoroInput} />
-          <LabeledBox label="short break" min={5} max={15} ref={sbInput} />
-          <LabeledBox label="long break" min={5} max={30} ref={lbInput} />
+          <LabeledBox label="pomodoro" min={1} max={120} ref={pomodoroInput} />
+          <LabeledBox label="short break" min={1} max={15} ref={sbInput} />
+          <LabeledBox label="long break" min={1} max={30} ref={lbInput} />
         </div>
 
         <Colors />

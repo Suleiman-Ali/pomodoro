@@ -3,6 +3,7 @@ import {
   FormEvent,
   FormEventHandler,
   ReactNode,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -18,6 +19,9 @@ const colors = [
   '#e92a64',
 ];
 
+interface ProviderProps {
+  children: ReactNode;
+}
 interface ContextTypes {
   pomodoro: number;
   sb: number;
@@ -41,10 +45,6 @@ interface ContextTypes {
   getCurrent: (option: number) => number[];
 }
 
-interface ProviderProps {
-  children: ReactNode;
-}
-
 const Context = createContext<ContextTypes>(undefined!);
 export default Context;
 
@@ -57,17 +57,51 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
   const [sb, setSB] = useState<number>(SB);
   const [lb, setLB] = useState<number>(LB);
   const [option, setOption] = useState<number>(1);
-  const [color, setColor] = useState<string>(colors[1]);
+  const [color, setColor] = useState<string>(colors[4]);
   const [on, setOn] = useState<boolean>(false);
   const [model, setModel] = useState<boolean>(false);
   const pomodoroInput = useRef<HTMLInputElement>(undefined!);
   const sbInput = useRef<HTMLInputElement>(undefined!);
   const lbInput = useRef<HTMLInputElement>(undefined!);
 
+  useEffect(() => {
+    let currentOption = setPomodoro;
+    if (option === 2) currentOption = setSB;
+    if (option === 3) currentOption = setLB;
+    let timer: any = () => setInterval(() => currentOption((n) => n - 1), 1000);
+    if (on) timer = timer();
+    return () => clearInterval(timer);
+  }, [on]);
+
+  useEffect(() => {
+    if (pomodoro <= 0) {
+      setOn(false);
+      setPomodoro(POMODORO);
+    }
+  }, [pomodoro]);
+
+  useEffect(() => {
+    if (sb <= 0) {
+      setOn(false);
+      setSB(SB);
+    }
+  }, [sb]);
+
+  useEffect(() => {
+    if (lb <= 0) {
+      setOn(false);
+      setLB(LB);
+    }
+  }, [lb]);
+
   const optionChangeHandler = (n: number) => setOption(n);
+
   const selectColor = (color: string) => setColor(color);
+
   const modelChangeHandler = (exp: boolean) => setModel(exp);
+
   const onChangeHandler = (exp: boolean) => setOn(exp);
+
   const submitHandler: FormEventHandler<HTMLFormElement> = (
     e: FormEvent<HTMLFormElement>
   ): void => {

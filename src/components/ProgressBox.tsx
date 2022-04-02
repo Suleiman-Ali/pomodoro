@@ -4,7 +4,8 @@ import Context from '../context';
 import { useContext } from 'react';
 
 function ProgressBox(): JSX.Element {
-  const { color, modelChangeHandler, option, getCurrent } = useContext(Context);
+  const { color, modelChangeHandler, option, getCurrent, on } =
+    useContext(Context);
   let [current, CURRENT] = getCurrent(option);
   let minutes = `${Math.floor(current / 60)}`.padStart(2, '0');
   let preSeconds = Math.round(+`0.${`${current / 60}`.split('.')[1]}` * 60);
@@ -15,11 +16,13 @@ function ProgressBox(): JSX.Element {
   return (
     <div className="progress">
       <Progress text={text} percent={percent} color={color} />
-      <Icon
-        classes="bi bi-gear-fill settings"
-        color={color}
-        onClick={() => modelChangeHandler(true)}
-      />
+      {!on && (
+        <Icon
+          classes="bi bi-gear-fill settings"
+          color={color}
+          onClick={() => modelChangeHandler(true)}
+        />
+      )}
     </div>
   );
 }
