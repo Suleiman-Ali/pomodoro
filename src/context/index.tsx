@@ -37,6 +37,7 @@ interface ContextTypes {
   pomodoroInput: React.MutableRefObject<HTMLInputElement>;
   sbInput: React.MutableRefObject<HTMLInputElement>;
   lbInput: React.MutableRefObject<HTMLInputElement>;
+  audio: React.MutableRefObject<HTMLAudioElement>;
   submitHandler: FormEventHandler<HTMLFormElement>;
   optionChangeHandler: (n: number) => void;
   selectColor: (color: string) => void;
@@ -63,6 +64,7 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
   const pomodoroInput = useRef<HTMLInputElement>(undefined!);
   const sbInput = useRef<HTMLInputElement>(undefined!);
   const lbInput = useRef<HTMLInputElement>(undefined!);
+  const audio = useRef<HTMLAudioElement>(undefined!);
 
   useEffect(() => {
     let currentOption = setPomodoro;
@@ -77,6 +79,7 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
     if (pomodoro <= 0) {
       setOn(false);
       setPomodoro(POMODORO);
+      audio.current.play();
     }
   }, [pomodoro]);
 
@@ -84,6 +87,7 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
     if (sb <= 0) {
       setOn(false);
       setSB(SB);
+      audio.current.play();
     }
   }, [sb]);
 
@@ -91,6 +95,7 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
     if (lb <= 0) {
       setOn(false);
       setLB(LB);
+      audio.current.play();
     }
   }, [lb]);
 
@@ -154,6 +159,7 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
         SB,
         LB,
         getCurrent,
+        audio,
       }}
     >
       {children}
