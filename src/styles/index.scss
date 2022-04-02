@@ -14,6 +14,10 @@ html {
   transition: all 0.2s;
 }
 
+body {
+  transition: none;
+}
+
 text {
   font-weight: 700 !important;
 }
@@ -27,6 +31,7 @@ text {
   gap: 5rem;
   background-color: #1e2140;
   padding: 3rem 0;
+  transition: none;
 }
 
 .options {
