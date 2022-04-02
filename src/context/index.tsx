@@ -43,15 +43,16 @@ interface ContextTypes {
   selectColor: (color: string) => void;
   modelChangeHandler: (exp: boolean) => void;
   onChangeHandler: (exp: boolean) => void;
-  getCurrent: (option: number) => number[];
+  getCurrent: () => string[];
 }
 
 const Context = createContext<ContextTypes>(undefined!);
 export default Context;
 
-let POMODORO = 25 * 60;
-let SB = 5 * 60;
-let LB = 10 * 60;
+const bySixty = (n: number) => n * 60;
+let POMODORO = bySixty(25);
+let SB = bySixty(5);
+let LB = bySixty(10);
 
 export function ContextProvider({ children }: ProviderProps): JSX.Element {
   const [pomodoro, setPomodoro] = useState<number>(POMODORO);
@@ -112,28 +113,46 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
   ): void => {
     e.preventDefault();
     if (pomodoroInput.current.value) {
-      POMODORO = +pomodoroInput.current.value * 60;
-      setPomodoro(+pomodoroInput.current.value * 60);
+      POMODORO = bySixty(+pomodoroInput.current.value);
+      setPomodoro(bySixty(+pomodoroInput.current.value));
     }
-
     if (sbInput.current.value) {
-      SB = +sbInput.current.value * 60;
-      setSB(+sbInput.current.value * 60);
+      SB = bySixty(+sbInput.current.value);
+      setSB(bySixty(+sbInput.current.value));
     }
 
     if (lbInput.current.value) {
-      LB = +lbInput.current.value * 60;
-      setLB(+lbInput.current.value * 60);
+      LB = bySixty(+lbInput.current.value);
+      setLB(bySixty(+lbInput.current.value));
     }
-
     setModel(false);
   };
 
-  const getCurrent = (option: number): number[] => {
-    if (option === 1) return [pomodoro, POMODORO];
-    if (option === 2) return [sb, SB];
-    if (option === 3) return [lb, LB];
-    return [0, 0];
+  const getCurrent = (): string[] => {
+    let current, CURRENT;
+
+    if (option === 1) {
+      current = pomodoro;
+      CURRENT = POMODORO;
+    }
+    if (option === 2) {
+      current = sb;
+      CURRENT = SB;
+    }
+    if (option === 3) {
+      current = lb;
+      CURRENT = LB;
+    }
+
+    if (!current || !CURRENT) return [];
+
+    let minutes = `${Math.floor(current / 60)}`.padStart(2, '0');
+    let preSeconds = Math.round(+`0.${`${current / 60}`.split('.')[1]}` * 60);
+    let seconds = !preSeconds ? '00' : `${preSeconds}`.padStart(2, '0');
+    const text = `${minutes}:${seconds}`;
+    const percent = `${((CURRENT - current) / CURRENT) * 100}`;
+
+    return [text, percent];
   };
 
   return (

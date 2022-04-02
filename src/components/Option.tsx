@@ -13,11 +13,12 @@ function Option({
   onClick,
   disabled,
 }: OptionProps): JSX.Element {
+  const styles = condition ? { backgroundColor: color, color: '#151932' } : {};
   return (
     <button
       className="option"
       onClick={onClick}
-      style={condition ? { backgroundColor: color, color: '#151932' } : {}}
+      style={styles}
       disabled={disabled}
     >
       {text}
