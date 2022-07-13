@@ -146,8 +146,9 @@ export function ContextProvider({ children }: ProviderProps): JSX.Element {
 
     if (!current || !CURRENT) return [];
 
-    let minutes = `${Math.floor(current / 60)}`.padStart(2, '0');
-    let preSeconds = Math.round(+`0.${`${current / 60}`.split('.')[1]}` * 60);
+    const x = current / 60;
+    let minutes = `${Math.floor(x)}`.padStart(2, '0');
+    let preSeconds = Math.round(+`0.${`${x}`.split('.')[1]}` * 60);
     let seconds = !preSeconds ? '00' : `${preSeconds}`.padStart(2, '0');
     const text = `${minutes}:${seconds}`;
     const percent = `${((CURRENT - current) / CURRENT) * 100}`;
