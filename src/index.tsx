@@ -1,10 +1,10 @@
-import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/App';
+import { StrictMode } from 'react';
+import { render } from 'react-dom';
 import { ContextProvider } from './context';
+import App from './components/App';
 import './styles/index.scss';
 
-ReactDOM.render(
+render(
   <ContextProvider>
     <StrictMode>
       <App />
