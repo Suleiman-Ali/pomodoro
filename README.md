@@ -4,7 +4,7 @@ Pomodoro is a simple timer that implements the pomodoro technique which is a tim
 
 ![Alt text](./site-image.png)
 
-### Built Using
+### Technologies
 - HTML
 - SASS
 - Typescript 
